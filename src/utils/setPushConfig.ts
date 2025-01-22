@@ -24,32 +24,32 @@ export function setPushConfig() {
                 sound: 'default',
             },
             incomingCallChannel: {
-                id: 'stream_incoming_call_channel_update2',
+                id: 'stream_incoming_call',
                 name: 'Incoming call notifications',
                 importance: AndroidImportance.HIGH,
             },
             incomingCallNotificationTextGetters: {
                 getTitle: (createdUserName: string) =>
                     `Incoming call from ${createdUserName}`,
-                getBody: (_createdUserName: string) => 'Tap to open the call',
+                getBody: (_createdUserName: string) => 'Tap to answer the call',
             },
-            callNotificationTextGetters: {
-                getTitle(type, createdUserName) {
-                    if (type === 'call.live_started') {
-                        return `Call went live, it was started by ${createdUserName}`;
-                    } else {
-                        return `${createdUserName} is notifying you about a call`;
-                    }
-                },
-                getBody(_type, _createdUserName) {
-                    return 'Tap to open the call';
-                },
-            },
+            // callNotificationTextGetters: {
+            //     getTitle(type, createdUserName) {
+            //         if (type === 'call.live_started') {
+            //             return `Call went live, it was started by ${createdUserName}`;
+            //         } else {
+            //             return `${createdUserName} is notifying you about a call`;
+            //         }
+            //     },
+            //     getBody(_type, _createdUserName) {
+            //         return 'Tap to open the call';
+            //     },
+            // },
         },
         createStreamVideoClient,
     });
 
-    setFirebaseListeners();
+    //setFirebaseListeners();
     if (Platform.OS === 'android') {
         // on press handlers of background notifications
         notifee.onBackgroundEvent(async (event) => {
@@ -64,15 +64,15 @@ export function setPushConfig() {
             }
         });
     }
-    if (Platform.OS === 'ios') {
-        // on press handlers of foreground notifications for iOS
-        // note: used only for non-ringing notifications
-        notifee.onForegroundEvent((event) => {
-            if (isNotifeeStreamVideoEvent(event)) {
-                oniOSNotifeeEvent({ event, isBackground: false });
-            }
-        });
-    }
+    // if (Platform.OS === 'ios') {
+    //     // on press handlers of foreground notifications for iOS
+    //     // note: used only for non-ringing notifications
+    //     notifee.onForegroundEvent((event) => {
+    //         if (isNotifeeStreamVideoEvent(event)) {
+    //             oniOSNotifeeEvent({ event, isBackground: false });
+    //         }
+    //     });
+    // }
 }
 
 /**
