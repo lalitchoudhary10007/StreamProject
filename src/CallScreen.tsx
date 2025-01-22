@@ -14,26 +14,29 @@ import {
 } from '@stream-io/video-react-native-sdk';
 
 
-export const CallScreen = ({navigation}) => {
+export const CallScreen = ({ navigation }) => {
     const calls = useCalls();
     const call = calls[0];
-  
+    const isCallCreatedByMe = call?.isCreatedByMe;
+    const { useCallCallingState } = useCallStateHooks();
+    const callingState = useCallCallingState();
+
     if (!call) {
         () => navigation.goBack()
         return null;
-      }
+    }
+
+    if (callingState == CallingState.LEFT || callingState == CallingState.UNKNOWN) {
+        () => navigation.goBack()
+    }
 
     return (
         <StreamCall call={call}>
-            {/* <View style={styles.container}> */}
-                {/* <Text style={styles.text}>Here we will add Video Calling UI</Text>
-                <Button title="Go back" onPress={goToHomeScreen} />
-                <ParticipantCountText />
-                <CallContent
-                    onHangupCallHandler={goToHomeScreen}
-                /> */}
+            <View style={styles.container}>
+                <Text style={styles.text}>{"state:- " + callingState}</Text>
+                <Text style={styles.text}>{"call created:- " + isCallCreatedByMe}</Text>
                 <RingingCallContent />
-            {/* </View> */}
+            </View>
         </StreamCall>
     );
 };

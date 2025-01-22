@@ -29,7 +29,7 @@ export default function CallProvider({ children }: PropsWithChildren) {
         {children}
         {call && (
           <Pressable
-            onPress={() => console.warn("Call is ringing")}
+            onPress={() => navigation.navigate('CallScreen')}
             style={{
               position: 'absolute',
               backgroundColor: 'lightgreen',
